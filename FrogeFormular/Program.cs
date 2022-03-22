@@ -32,14 +32,30 @@ Console.WriteLine($"{elbil.Count}");
       .OrderBy(x => x.CarModels)
       .ToList();
 
-    Console.WriteLine($"{results.Count}");
-    foreach (var item in results)
-    {
-        Console.WriteLine($"{item.Age} : {item.IsSpanishCar} : {item.CarModels}");
-    }
 
-var getModels = dbset_FormData.FindAll().Select(x => x.CarModels);
+var g = results.GroupBy(x => x.CarModels)
+        .OrderBy(group => group.Key)
+        .Select(group => new UniqueCars { CarName = group.Key, Count = group.Count() })
+        .OrderByDescending(x => x.Count);
 
-var r = getModels.Distinct().Count();
+Console.WriteLine($"{results.Count}");
+Console.WriteLine("=====Alla Elibilar=====");
+foreach (var item in results)
+{
+    Console.WriteLine($"{item.Age} : {item.IsSpanishCar} : {item.CarModels}");
+}
+Console.WriteLine("=====Populäraset Elibilarna=====");
+foreach (var item in g)
+{
+    Console.WriteLine($"{item.CarName} : {item.Count}");
+}
 
-Console.WriteLine("hello");
+
+
+//var getModels = dbset_FormData.Query()
+//     .Select(x => x.CarModels.Distinct())
+//     .OrderBy(x => x.CarModels)
+//     .ToList();
+
+//Grouperar med med Carmodels 
+
