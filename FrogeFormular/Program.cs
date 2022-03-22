@@ -38,3 +38,8 @@ Console.WriteLine($"{elbil.Count}");
         Console.WriteLine($"{item.Age} : {item.IsSpanishCar} : {item.CarModels}");
     }
 
+var getModels = dbset_FormData.FindAll().Select(x => x.CarModels);
+
+var r = getModels.Distinct().Count();
+
+Console.WriteLine("hello");
