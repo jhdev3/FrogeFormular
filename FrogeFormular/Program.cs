@@ -1,14 +1,18 @@
-﻿
-
-
-using FrogeFormular.ReadCSV;
+﻿using FrogeFormular.ReadCSV;
 using FrogeFormular.Models;
 using Microsoft.Data.Sqlite;
 using LiteDB;
 
+
+var _db = new LiteDatabase("FormData.db");
+var dbset_FormData = _db.GetCollection<BaseEntity>("FormTable");
+
 GetDataFromFile GDFF = new();
 
 var list = GDFF.ParseFormularData();
+dbset_FormData.InsertBulk(list);     //Bör rensa tabell om vi lägger in hel listan . 
+
+
 
 foreach (var item in list)
 {
@@ -21,16 +25,7 @@ List<BaseEntity> elbil = list.Where(x=> x.IsSpanishCar == true).ToList();
 Console.WriteLine($"{elbil.Count}");
 
 
-using (var db = new LiteDatabase("FormData.db"))
-{
     // Get a collection (or create, if doesn't exist) 
-    var dbset_FormData = db.GetCollection<BaseEntity>("FormTable"); //Bör rensa tabell om vi lägger in hel listan . 
-
-
-
-
-    // Insert new customer document (Id will be auto-incremented)
-    dbset_FormData.InsertBulk(list);
 
     var results = dbset_FormData.Query()
       .Where(x => x.IsSpanishCar == true)
@@ -43,4 +38,3 @@ using (var db = new LiteDatabase("FormData.db"))
         Console.WriteLine($"{item.Age} : {item.IsSpanishCar} : {item.CarModels}");
     }
 
-}
