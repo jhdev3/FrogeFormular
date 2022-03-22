@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FrogeFormular.DB
 {
-    internal class DbContext
+    internal class DbContext 
     {
         public string dbName = "Name";
 

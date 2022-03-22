@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FrogeFormular.Models
 {
+    /// <summary>
+    /// Age 0 if not filled
+    /// </summary>
     internal class BaseEntity
     {
 
@@ -15,9 +18,7 @@ namespace FrogeFormular.Models
 
         public bool IsSpanishCar { get; set; }  
 
-        public string CarModels { get; set; }    
-
-
+        public string? CarModels { get; set; }//är inte ombligatoriskt att fylla i.    
 
     }
 }
