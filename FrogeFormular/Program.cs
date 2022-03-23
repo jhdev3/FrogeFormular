@@ -27,9 +27,9 @@ foreach (var item in list)
 List<BaseEntity> elbil = list.Where(x => x.IsSpanishCar == true).ToList();
 Console.WriteLine($"Svara ja på elbil: {elbil.Count}");
 
-Console.WriteLine("=====End Test ReadFromDataFile=====");
+Console.WriteLine("=====Read from DB =====");
 
-
+Console.WriteLine("Antal enkätsvar:  " + dbset_FormData.Count() + "st");
 
 
 Console.WriteLine("=====Ålder=====");
@@ -43,7 +43,6 @@ var AvrageAge = dbset_FormData.Find(x => x.Age > 0).Select(x => x.Age).Average()
 Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år, Medelålder: {AvrageAge}");
 
 
-Console.WriteLine("=====End Ålder=====");
 
 // Get a collection (or create, if doesn't exist) 
 
@@ -58,18 +57,18 @@ var g = results.GroupBy(x => x.CarModels)
         .OrderByDescending(x => x.Count);
 
 Console.WriteLine($"Hur många som svarade ja till spansk bil : {results.Count}");
-Console.WriteLine("=====Alla Elibilar=====");
-foreach (var item in results)
-{
-    Console.WriteLine($"{item.Age} : {item.IsSpanishCar} : {item.CarModels}");
-}
-Console.WriteLine("=====Populäraset Elibilarna=====");
-foreach (var item in g)
-{
-    Console.WriteLine($"{item.CarName} : {item.Count}");
-}
+//Console.WriteLine("=====Alla Elibilar=====");
+//foreach (var item in results)
+//{
+//    Console.WriteLine($"{item.Age} : {item.IsSpanishCar} : {item.CarModels}");
+//}
+//Console.WriteLine("=====Populäraset Elibilarna=====");
+//foreach (var item in g)
+//{
+//    Console.WriteLine($"{item.CarName} : {item.Count}");
+//}
 
-/*Spara Bilarna i databasen i egen collection */
+/*Spara Bilarna i databasen i egen collection för skojs skull och testa sql lite update - Det var därför som jag la till id i UniqueCars */
 foreach (var item in g)
 {
     var findCarname = dbset_UniqueCars.FindOne(i => i.CarName == item.CarName);
@@ -107,10 +106,5 @@ foreach (var item in AllCars)
 {
     Console.WriteLine(item.CarName + " : " + item.Count);
 }
-//var getModels = dbset_FormData.Query()
-//     .Select(x => x.CarModels.Distinct())
-//     .OrderBy(x => x.CarModels)
-//     .ToList();
 
-//Grouperar med med Carmodels 
 
