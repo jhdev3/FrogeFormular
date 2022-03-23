@@ -29,12 +29,11 @@ Console.WriteLine("=====Ålder=====");
 
 var Oldest = dbset_FormData.Max(x => x.Age);
 var Youngest = dbset_FormData.Min(x => x.Age);
-
 var AvrageAge = dbset_FormData.Find(x => x.Age > 0).Select(x => x.Age).Average();//Om inte fältet är ifyllt blir 0 standard + är man 0 är inte statestiken relevant här kan vi även ändra till 18 osv.
 
 
 
-Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år, Medelålder: {Avrage}");
+Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år, Medelålder: {AvrageAge}");
 
 
 
