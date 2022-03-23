@@ -12,22 +12,33 @@ GetDataFromFile GDFF = new();
 var list = GDFF.ParseFormularData();
 dbset_FormData.InsertBulk(list);     //Bör rensa tabell om vi lägger in hel listan . 
 
+Console.WriteLine("=====Test ReadFromDataFile=====");
 
 
 foreach (var item in list)
 {
     Console.WriteLine($"{item.Age} : {item.IsSpanishCar} : {item.CarModels}");
 }
+List<BaseEntity> elbil = list.Where(x => x.IsSpanishCar == true).ToList();
+Console.WriteLine($"Svara ja på elbil: {elbil.Count}");
+
+Console.WriteLine("=====End Test ReadFromDataFile=====");
+
+Console.WriteLine("=====Ålder=====");
 
 
-List<BaseEntity> elbil = list.Where(x=> x.IsSpanishCar == true).ToList();
+var Oldest = dbset_FormData.Max(x => x.Age);
+var Youngest = dbset_FormData.Min(x => x.Age);
 
-Console.WriteLine($"{elbil.Count}");
+Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år");
 
 
-    // Get a collection (or create, if doesn't exist) 
 
-    var results = dbset_FormData.Query()
+Console.WriteLine("=====End Ålder=====");
+
+// Get a collection (or create, if doesn't exist) 
+
+var results = dbset_FormData.Query()
       .Where(x => x.IsSpanishCar == true)
       .OrderBy(x => x.CarModels)
       .ToList();
