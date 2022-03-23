@@ -6,10 +6,14 @@ using LiteDB;
 
 var _db = new LiteDatabase("FormData.db");
 var dbset_FormData = _db.GetCollection<BaseEntity>("FormTable");
+var dbset_UniqueCars = _db.GetCollection<UniqueCars>("UniqueCars");
+dbset_UniqueCars.EnsureIndex("CarName"); //Kommer att söka efter dem :) vid update :)
+
 
 GetDataFromFile GDFF = new();
 
 var list = GDFF.ParseFormularData();
+
 dbset_FormData.InsertBulk(list);     //Bör rensa tabell om vi lägger in hel listan . 
 
 Console.WriteLine("=====Test ReadFromDataFile=====");
@@ -32,9 +36,7 @@ var Youngest = dbset_FormData.Min(x => x.Age);
 var AvrageAge = dbset_FormData.Find(x => x.Age > 0).Select(x => x.Age).Average();//Om inte fältet är ifyllt blir 0 standard + är man 0 är inte statestiken relevant här kan vi även ändra till 18 osv.
 
 
-
 Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år, Medelålder: {AvrageAge}");
-
 
 
 Console.WriteLine("=====End Ålder=====");
@@ -46,7 +48,7 @@ var results = dbset_FormData.Query()
       .OrderBy(x => x.CarModels)
       .ToList();
 
-
+//Linq LiteDb har inte support direkt för GroupBy.
 var g = results.GroupBy(x => x.CarModels)
         .OrderBy(group => group.Key)
         .Select(group => new UniqueCars { CarName = group.Key, Count = group.Count() })
@@ -64,8 +66,30 @@ foreach (var item in g)
     Console.WriteLine($"{item.CarName} : {item.Count}");
 }
 
+/*Spara Bilarna i databasen i egen collection */
+foreach (var item in g)
+{
+    var findCarname = dbset_UniqueCars.FindOne(i => i.CarName == item.CarName);
 
+    // set document _id using id parameter
+    Console.WriteLine();
+    if(findCarname != null)
+    {
+        findCarname.Count = item.Count;
+        dbset_UniqueCars.Update(findCarname);
+    }
+    else
+    {
+        var testr = dbset_UniqueCars.Insert(item);
+    }
+}
+Console.WriteLine("=====Populäraset Elibilarna laddad från DB för test=====");
 
+var test = dbset_UniqueCars.FindAll();
+foreach( var item  in test)
+{
+    Console.WriteLine(item.CarName + " : " + item.Count);
+}
 //var getModels = dbset_FormData.Query()
 //     .Select(x => x.CarModels.Distinct())
 //     .OrderBy(x => x.CarModels)
