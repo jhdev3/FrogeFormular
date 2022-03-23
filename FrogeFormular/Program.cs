@@ -50,7 +50,6 @@ var results = dbset_FormData.Query()
 
 //Linq LiteDb har inte support direkt för GroupBy.
 var g = results.GroupBy(x => x.CarModels)
-        .OrderBy(group => group.Key)
         .Select(group => new UniqueCars { CarName = group.Key, Count = group.Count() })
         .OrderByDescending(x => x.Count);
 
@@ -87,6 +86,20 @@ Console.WriteLine("=====Populäraset Elibilarna laddad från DB för test=====")
 
 var test = dbset_UniqueCars.FindAll();
 foreach( var item  in test)
+{
+    Console.WriteLine(item.CarName + " : " + item.Count);
+}
+
+
+var AllCars = dbset_FormData.FindAll()
+    .GroupBy(x =>x.CarModels)
+    .Select(group => new UniqueCars { CarName = group.Key, Count = group.Count() })
+    .OrderByDescending(x => x.Count);
+
+
+Console.WriteLine("=====Populäraset Bilarna=====");
+
+foreach (var item in AllCars)
 {
     Console.WriteLine(item.CarName + " : " + item.Count);
 }
