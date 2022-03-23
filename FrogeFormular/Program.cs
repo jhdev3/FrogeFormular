@@ -29,7 +29,8 @@ Console.WriteLine($"Svara ja på elbil: {elbil.Count}");
 
 Console.WriteLine("=====Read from DB =====");
 
-Console.WriteLine("Antal enkätsvar:  " + dbset_FormData.Count() + "st");
+var totalsvar = dbset_FormData.Count();   
+Console.WriteLine("Antal enkätsvar:  " + totalsvar + "st");
 
 
 Console.WriteLine("=====Ålder=====");
@@ -73,8 +74,7 @@ foreach (var item in g)
 {
     var findCarname = dbset_UniqueCars.FindOne(i => i.CarName == item.CarName);
 
-    // set document _id using id parameter
-    Console.WriteLine();
+  
     if(findCarname != null)
     {
         findCarname.Count = item.Count;
