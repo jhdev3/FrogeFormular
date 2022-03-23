@@ -14,7 +14,7 @@ GetDataFromFile GDFF = new();
 
 var list = GDFF.ParseFormularData();
 
-dbset_FormData.InsertBulk(list);     //Bör rensa tabell om vi lägger in hel listan . 
+dbset_FormData.InsertBulk(list);     //Bör rensa tabell om vi lägger in hel listan igen och igen eller så gör vi det inte och får bara fler rader i Databasen kommer va dubblerade men resultaten bör vara lika bara att antalet som svara på vårat formulär inte är 100% sant ;)=
 
 Console.WriteLine("=====Test ReadFromDataFile=====");
 
