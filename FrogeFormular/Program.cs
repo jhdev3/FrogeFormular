@@ -30,7 +30,17 @@ Console.WriteLine("=====Ålder=====");
 var Oldest = dbset_FormData.Max(x => x.Age);
 var Youngest = dbset_FormData.Min(x => x.Age);
 
-Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år");
+var NumberOfAgeEntries = dbset_FormData.Query().Where(x => x.Age > 0).Count();
+var SumAges = dbset_FormData.Find(x => x.Age > 0).Select(x => x.Age).Sum();
+//IEnumerable<int> numQuery1 =
+//           from Age in dbset_FormData
+//           where Age > 2
+//           select Age;
+////  db.Find().Sum()
+
+
+
+Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år, Medelålder: {SumAges/NumberOfAgeEntries}");
 
 
 
