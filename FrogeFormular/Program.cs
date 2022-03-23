@@ -9,23 +9,28 @@ var dbset_FormData = _db.GetCollection<BaseEntity>("FormTable");
 var dbset_UniqueCars = _db.GetCollection<UniqueCars>("UniqueCars");
 dbset_UniqueCars.EnsureIndex("CarName"); //Kommer att söka efter dem :) vid update :)
 
-
+/* Read from CSV fil */
 GetDataFromFile GDFF = new();
-
 var list = GDFF.ParseFormularData();
-//Eller använd bara när vi vill läsa in till db att ha kvar list kan vara kul för att testa och jämföra
-//dbset_FormData.InsertBulk(list);     //Bör rensa tabell om vi lägger in hel listan igen och igen eller så gör vi det inte och får bara fler rader i Databasen kommer va dubblerade men resultaten bör vara lika bara att antalet som svara på vårat formulär inte är 100% sant ;)=
 
-Console.WriteLine("=====Test ReadFromDataFile=====");
-
-Console.WriteLine($"Antal som svarat på enkäten: {list.Count} st");
-
-foreach (var item in list)
+if (_db.CollectionExists("FormTable"))
 {
-    Console.WriteLine($"{item.Age} : {item.IsSpanishCar} : {item.CarModels}");
+    //Bör rensa tabell om vi lägger in hel listan igen och igen eller så gör vi det inte och får bara fler rader i Databasen kommer va dubblerade men resultaten bör vara lika bara att antalet som svara på vårat formulär inte är 100% korrekt ;)
+    _db.DropCollection("FormTable");
+    dbset_FormData = _db.GetCollection<BaseEntity>("FormTable");
+    dbset_FormData.InsertBulk(list);    
 }
-List<BaseEntity> elbil = list.Where(x => x.IsSpanishCar == true).ToList();
-Console.WriteLine($"Svara ja på elbil: {elbil.Count}");
+
+//Console.WriteLine("=====Test ReadFromDataFile=====");
+
+//Console.WriteLine($"Antal som svarat på enkäten: {list.Count} st");
+
+//foreach (var item in list)
+//{
+//    Console.WriteLine($"{item.Age} : {item.IsSpanishCar} : {item.CarModels}");
+//}
+//List<BaseEntity> elbil = list.Where(x => x.IsSpanishCar == true).ToList();
+//Console.WriteLine($"Svara ja på elbil: {elbil.Count}");
 
 Console.WriteLine("=====Read from DB =====");
 
