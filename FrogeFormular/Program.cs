@@ -30,17 +30,11 @@ Console.WriteLine("=====Ålder=====");
 var Oldest = dbset_FormData.Max(x => x.Age);
 var Youngest = dbset_FormData.Min(x => x.Age);
 
-var NumberOfAgeEntries = dbset_FormData.Query().Where(x => x.Age > 0).Count();
-var SumAges = dbset_FormData.Find(x => x.Age > 0).Select(x => x.Age).Sum();
-//IEnumerable<int> numQuery1 =
-//           from Age in dbset_FormData
-//           where Age > 2
-//           select Age;
-////  db.Find().Sum()
+var AvrageAge = dbset_FormData.Find(x => x.Age > 0).Select(x => x.Age).Average();//Om inte fältet är ifyllt blir 0 standard + är man 0 är inte statestiken relevant här kan vi även ändra till 18 osv.
 
 
 
-Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år, Medelålder: {SumAges/NumberOfAgeEntries}");
+Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år, Medelålder: {Avrage}");
 
 
 
