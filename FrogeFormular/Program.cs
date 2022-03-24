@@ -32,13 +32,13 @@ if (_db.CollectionExists("FormTable"))
 //List<BaseEntity> elbil = list.Where(x => x.IsSpanishCar == true).ToList();
 //Console.WriteLine($"Svara ja på elbil: {elbil.Count}");
 
-Console.WriteLine("=====Read from DB =====");
+Console.WriteLine("\n===== Hur många deltog i undersökningen? =====");
 
 var totalsvar = dbset_FormData.Count();   
 Console.WriteLine("Antal enkätsvar:  " + totalsvar + "st");
 
 
-Console.WriteLine("=====Ålder=====");
+Console.WriteLine("\n=====Ålder=====");
 
 
 var Oldest = dbset_FormData.Max(x => x.Age);
@@ -62,7 +62,7 @@ var g = results.GroupBy(x => x.CarModels)
         .Select(group => new UniqueCars { CarName = group.Key, Count = group.Count() })
         .OrderByDescending(x => x.Count);
 
-Console.WriteLine($"Hur många som svarade ja till spansk bil : {results.Count}");
+Console.WriteLine($"\nHur många planerar köpa en elbil?: {results.Count}");
 //Console.WriteLine("=====Alla Elibilar=====");
 //foreach (var item in results)
 //{
@@ -90,7 +90,7 @@ foreach (var item in g)
         var testr = dbset_UniqueCars.Insert(item);
     }
 }
-Console.WriteLine("=====Populäraset Elibilarna laddad från DB för test=====");
+Console.WriteLine("\n=====Vilka bilmärken är mest populär?=====");
 
 var test = dbset_UniqueCars.FindAll();
 foreach( var item  in test)
@@ -105,11 +105,12 @@ var AllCars = dbset_FormData.FindAll()
     .OrderByDescending(x => x.Count);
 
 
-Console.WriteLine("=====Populäraset Bilarna=====");
+Console.WriteLine("\n=====Populäraste Bilarna=====");
 
 foreach (var item in AllCars)
 {
     Console.WriteLine(item.CarName + " : " + item.Count);
 }
+
 
 
