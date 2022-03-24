@@ -104,7 +104,6 @@ var AllCars = dbset_FormData.FindAll()
     .Select(group => new UniqueCars { CarName = group.Key, Count = group.Count() })
     .OrderByDescending(x => x.Count);
 
-
 Console.WriteLine("=====Populäraset Bilarna=====");
 
 foreach (var item in AllCars)
@@ -116,4 +115,6 @@ var age20to30 = dbset_FormData.Query()
     .Where(x => x.Age >= 20 && x.Age <= 30 && x.IsSpanishCar)
     .Count();
 
-Console.WriteLine("Age 20 to 30 som vill köpa Elbil: " + age20to30);
+Console.WriteLine("Age 20 to 30  som vill köpa Elbil: " + age20to30);
+var age30to40 = dbset_FormData.Count(x=> x.IsSpanishCar && x.Age >= 30 && x.Age <= 40);
+Console.WriteLine("Age 30 to 40  som vill köpa Elbil: " + age30to40);
