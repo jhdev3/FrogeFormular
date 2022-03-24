@@ -112,8 +112,28 @@ foreach (var item in AllCars)
     Console.WriteLine(item.CarName + " : " + item.Count);
 }
 
+
+Console.WriteLine("\n=====I vilken åldersspann är elbilar mest populär? =====");
+
 var age20to30 = dbset_FormData.Query()
     .Where(x => x.Age >= 20 && x.Age <= 30 && x.IsSpanishCar)
     .Count();
 
-Console.WriteLine("Age 20 to 30 som vill köpa Elbil: " + age20to30);
+Console.WriteLine("Antal personer mellan 20 till 30 som vill köpa elbil: " + age20to30);
+
+var age30to40 = dbset_FormData.Query()
+    .Where(x => x.Age > 30 && x.Age <= 40 && x.IsSpanishCar)
+    .Count();
+
+Console.WriteLine("Antal personer mellan 31 till 40 som vill köpa elbil: " + age30to40);
+
+var agePlus40 = dbset_FormData.Query()
+    .Where(x => x.Age > 40 && x.Age < 40 && x.IsSpanishCar)
+    .Count();
+
+Console.WriteLine("Antal personer plus 40 som vill köpa elbil: " + agePlus40);
+
+
+
+
+
