@@ -112,4 +112,8 @@ foreach (var item in AllCars)
     Console.WriteLine(item.CarName + " : " + item.Count);
 }
 
+var age20to30 = dbset_FormData.Query()
+    .Where(x => x.Age >= 20 && x.Age <= 30 && x.IsSpanishCar)
+    .Count();
 
+Console.WriteLine("Age 20 to 30 som vill köpa Elbil: " + age20to30);
