@@ -33,7 +33,7 @@ namespace FrogeFormular.ReadCSV
                     }
                     int? age = null;
 
-                    if (!string.IsNullOrEmpty(columns[1]))
+                    if (!string.IsNullOrEmpty(columns[1])) //Borde här bara kunna kolla efter string Empty men jaja
                     {
                         age = Convert.ToInt32(columns[1]);  
                     }
