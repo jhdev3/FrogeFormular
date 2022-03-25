@@ -94,12 +94,11 @@ foreach (var item in AllCars)
 //Kan utgå efter Min,Max ålder får att ta reda på vilka ålderspann som är relevanta :)
 Console.WriteLine("\n=====I vilken åldersspann är elbilar mest populär? =====");
 
-int age20to30 = dbset_FormData.Count(x => x.IsSpanishCar && x.Age >= 20 && x.Age <= 30); 
+int age20to30 = dbset_FormData.Count(x => x.IsSpanishCar && x.Age >= 20 && x.Age < 30);
 Console.WriteLine("Antal personer mellan 20 till 30 som vill köpa elbil: " + age20to30);
 
-int age30to40 = dbset_FormData.Count(x => x.IsSpanishCar && x.Age > 31 && x.Age <= 40);
-Console.WriteLine("Antal personer mellan 31 till 40 som vill köpa elbil: " + age30to40);
+int age30to40 = dbset_FormData.Count(x => x.IsSpanishCar && x.Age >= 30 && x.Age < 40);
+Console.WriteLine("Antal personer mellan 30 till 40 som vill köpa elbil: " + age30to40);
 
-int agePlus40 = dbset_FormData.Count(x => x.IsSpanishCar && x.Age > 41);
-Console.WriteLine("Antal personer äldre än 41 som vill köpa elbil: " + agePlus40);
-
+int agePlus40 = dbset_FormData.Count(x => x.IsSpanishCar && x.Age >= 40);
+Console.WriteLine("Antal personer äldre än 40 som vill köpa elbil: " + agePlus40);
