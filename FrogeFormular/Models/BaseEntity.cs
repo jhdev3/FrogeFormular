@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace FrogeFormular.Models
 {
     /// <summary>
-    /// Age 0 if not filled
+    /// Data från fråge formulär, till dessa data typer som ska sparas i en databas.
     /// </summary>
     internal class BaseEntity
     {
