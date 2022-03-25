@@ -32,8 +32,8 @@ Console.WriteLine("\n=====Ålder=====");
 
 
 var Oldest = dbset_FormData.Max(x => x.Age);
-var Youngest = dbset_FormData.Min(x => x.Age);
-var AvrageAge = dbset_FormData.Find(x => x.Age > 0).Select(x => x.Age).Average();//Om inte fältet inte är ifyllt blir ålder 0 och det vill vi inte ha för att göra stestiken relevant skulle även kunna sätta tex > 18
+var Youngest = dbset_FormData.Min(x => x.Age && x.Age > 0);
+var AvrageAge = dbset_FormData.Find(x => x.Age > 0).Select(x => x.Age).Average();//Om inte fältet inte är ifyllt sätter vi ålder till 0 och det vill vi undvika när vi tar medelvärde
 
 
 Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år, Medelålder: {Math.Round(AvrageAge)} år."); //Avrundar Avrage blir snyggare vid tex. 2.5 rundar den ner till 2.

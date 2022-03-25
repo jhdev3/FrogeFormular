@@ -30,14 +30,21 @@ namespace FrogeFormular.ReadCSV
                     if (columns[2] == "Spansk bil  (El-bil)") 
                     { 
                         isElbil = true; //Alltid markerad i formuläret behöver inte kolla för null
-                    }      
+                    }
+                    int age = 0;
+
+                    if (!string.IsNullOrEmpty(columns[1]))
+                    {
+                        age = Convert.ToInt32(columns[1]);  
+                    }
 
                     formData.Add(new BaseEntity
                     {
-                        Age = Convert.ToInt32(columns[1]),
+                        
+                        Age = age,
                         IsSpanishCar = isElbil,
                         CarModels = columns[3]
-                    }); ;
+                    }); 
                 }
 
             }
