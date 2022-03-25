@@ -14,9 +14,9 @@ namespace FrogeFormular.Models
 
         //public int Id { get; set; } //Låta databasen skapa id eller skapa själva? 
 
-        public int Age { get; set; }    
+        public int? Age { get; set; }    
 
-        public bool IsSpanishCar { get; set; }  
+        public bool IsSpanishCar { get; set; }  //Obligatoriskt att svara på I formuläret
 
         public string? CarModels { get; set; }//är inte ombligatoriskt att fylla i.    
 

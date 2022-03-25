@@ -13,7 +13,6 @@ namespace FrogeFormular.ReadCSV
         private string FileName = @"formularData.csv";
 
 
-
        public List<BaseEntity> ParseFormularData()
         {
             var formData = new List<BaseEntity>();
@@ -28,14 +27,24 @@ namespace FrogeFormular.ReadCSV
                     string[] columns = reader.ReadFields();
 
                     bool isElbil = false;
-                    if (columns[2] == "Spansk bil  (El-bil)") { isElbil = true; } //Alltid markerad i formuläret behöver inte kolla för null     
+                    if (columns[2] == "Spansk bil  (El-bil)") 
+                    { 
+                        isElbil = true; //Alltid markerad i formuläret behöver inte kolla för null
+                    }
+                    int? age = null;
+
+                    if (!string.IsNullOrEmpty(columns[1])) //Borde här bara kunna kolla efter string Empty men jaja
+                    {
+                        age = Convert.ToInt32(columns[1]);  
+                    }
 
                     formData.Add(new BaseEntity
                     {
-                        Age = Convert.ToInt32(columns[1]),
+
+                        Age = age,
                         IsSpanishCar = isElbil,
-                        CarModels = columns[3]
-                    }); ;
+                        CarModels = columns[3] != "" ? columns[3] : "Vet inte", //kollar för tom sträng
+                    }) ; 
                 }
 
             }
