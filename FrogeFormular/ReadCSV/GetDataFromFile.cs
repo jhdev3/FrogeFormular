@@ -13,7 +13,6 @@ namespace FrogeFormular.ReadCSV
         private string FileName = @"formularData.csv";
 
 
-
        public List<BaseEntity> ParseFormularData()
         {
             var formData = new List<BaseEntity>();
@@ -28,7 +27,10 @@ namespace FrogeFormular.ReadCSV
                     string[] columns = reader.ReadFields();
 
                     bool isElbil = false;
-                    if (columns[2] == "Spansk bil  (El-bil)") { isElbil = true; } //Alltid markerad i formuläret behöver inte kolla för null     
+                    if (columns[2] == "Spansk bil  (El-bil)") 
+                    { 
+                        isElbil = true; //Alltid markerad i formuläret behöver inte kolla för null
+                    }      
 
                     formData.Add(new BaseEntity
                     {

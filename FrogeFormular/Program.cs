@@ -6,8 +6,8 @@ using LiteDB;
 
 var _db = new LiteDatabase("FormData.db");
 var dbset_FormData = _db.GetCollection<BaseEntity>("FormTable");
-var dbset_UniqueCars = _db.GetCollection<UniqueCars>("UniqueCars");
-dbset_UniqueCars.EnsureIndex("CarName"); //Kommer att söka efter dem :) vid update :)
+var dbset_UniqueSpanishCars = _db.GetCollection<UniqueCars>("UniqueSpanishCars"); //Lite dåligt namn då det är sorterat på El-bil.
+dbset_UniqueSpanishCars.EnsureIndex("CarName"); //Kommer att söka efter dem :) vid update :)
 
 /* Read from CSV fil */
 GetDataFromFile GDFF = new();
@@ -15,22 +15,12 @@ var list = GDFF.ParseFormularData();
 
 if (_db.CollectionExists("FormTable"))
 {
-    //Bör rensa tabell om vi lägger in hel listan igen och igen eller så gör vi det inte och får bara fler rader i Databasen kommer va dubblerade men resultaten bör vara lika bara att antalet som svara på vårat formulär inte är 100% korrekt ;)
+    //Bör rensa tabell om vi lägger in hel listan igen och igen eller så gör vi det inte och får bara fler rader i Databasen kommer va dubblerade men resultaten blir densamma,  bara att antalet som svara på vårat formulär inte är 100% korrekt ;)
     _db.DropCollection("FormTable");
     dbset_FormData = _db.GetCollection<BaseEntity>("FormTable");
     dbset_FormData.InsertBulk(list);    
 }
 
-//Console.WriteLine("=====Test ReadFromDataFile=====");
-
-//Console.WriteLine($"Antal som svarat på enkäten: {list.Count} st");
-
-//foreach (var item in list)
-//{
-//    Console.WriteLine($"{item.Age} : {item.IsSpanishCar} : {item.CarModels}");
-//}
-//List<BaseEntity> elbil = list.Where(x => x.IsSpanishCar == true).ToList();
-//Console.WriteLine($"Svara ja på elbil: {elbil.Count}");
 
 Console.WriteLine("\n===== Hur många deltog i undersökningen? =====");
 
@@ -46,53 +36,41 @@ var Youngest = dbset_FormData.Min(x => x.Age);
 var AvrageAge = dbset_FormData.Find(x => x.Age > 0).Select(x => x.Age).Average();//Om inte fältet är ifyllt blir 0 standard + är man 0 är inte statestiken relevant här kan vi även ändra till 18 osv.
 
 
-Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år, Medelålder: {AvrageAge}");
+Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år, Medelålder: {Math.Round(AvrageAge)} år."); //Avrundar Avrage blir snyggare vid tex. 2.5 rundar den ner till 2.
 
 
-
-// Get a collection (or create, if doesn't exist) 
-
+//Hämtar alla som svarade JA på spanish car. 
 var results = dbset_FormData.Query()
       .Where(x => x.IsSpanishCar == true)
       .OrderBy(x => x.CarModels)
       .ToList();
 
-//Linq LiteDb har inte support direkt för GroupBy.
+//Linq fick inte LiteDb att lira med groupBy.
 var g = results.GroupBy(x => x.CarModels)
         .Select(group => new UniqueCars { CarName = group.Key, Count = group.Count() })
         .OrderByDescending(x => x.Count);
 
 Console.WriteLine($"\nHur många planerar köpa en elbil?: {results.Count}");
-//Console.WriteLine("=====Alla Elibilar=====");
-//foreach (var item in results)
-//{
-//    Console.WriteLine($"{item.Age} : {item.IsSpanishCar} : {item.CarModels}");
-//}
-//Console.WriteLine("=====Populäraset Elibilarna=====");
-//foreach (var item in g)
-//{
-//    Console.WriteLine($"{item.CarName} : {item.Count}");
-//}
 
-/*Spara Bilarna i databasen i egen collection för skojs skull och testa sql lite update - Det var därför som jag la till id i UniqueCars */
+/*Spara Bilarna i databasen i egen collection för skojs skull och testa sql lite update - Det var därför som id finns i UniqueCars */
 foreach (var item in g)
 {
-    var findCarname = dbset_UniqueCars.FindOne(i => i.CarName == item.CarName);
+    var findCarname = dbset_UniqueSpanishCars.FindOne(i => i.CarName == item.CarName);
 
   
     if(findCarname != null)
     {
         findCarname.Count = item.Count;
-        dbset_UniqueCars.Update(findCarname);
+        dbset_UniqueSpanishCars.Update(findCarname);
     }
     else
     {
-        var testr = dbset_UniqueCars.Insert(item);
+        var testr = dbset_UniqueSpanishCars.Insert(item);
     }
 }
-Console.WriteLine("\n=====Vilka bilmärken är mest populär?=====");
+Console.WriteLine("\n=====Vilka bilmärken är mest populär när vi är ute efter en El-bil(spanskbil)?=====");
 
-var test = dbset_UniqueCars.FindAll();
+var test = dbset_UniqueSpanishCars.FindAll();
 foreach( var item  in test)
 {
     Console.WriteLine(item.CarName + " : " + item.Count);
@@ -105,14 +83,14 @@ var AllCars = dbset_FormData.FindAll()
     .OrderByDescending(x => x.Count);
 
 
-Console.WriteLine("\n=====Populäraste Bilarna=====");
+Console.WriteLine("\n=====Alla bilmärken rankade utifrån popularitet=====");
 
 foreach (var item in AllCars)
 {
     Console.WriteLine(item.CarName + " : " + item.Count);
 }
 
-
+//Kan utgå efter Min,Max ålder får att ta reda på vilka ålderspann som är relevanta :)
 Console.WriteLine("\n=====I vilken åldersspann är elbilar mest populär? =====");
 
 int age20to30 = dbset_FormData.Count(x => x.IsSpanishCar && x.Age >= 20 && x.Age <= 30); 
