@@ -33,7 +33,7 @@ Console.WriteLine("\n=====Ålder=====");
 
 var Oldest = dbset_FormData.Max(x => x.Age);
 var Youngest = dbset_FormData.Min(x => x.Age);
-var AvrageAge = dbset_FormData.Find(x => x.Age > 0).Select(x => x.Age).Average();//Om inte fältet är ifyllt blir 0 standard + är man 0 är inte statestiken relevant här kan vi även ändra till 18 osv.
+var AvrageAge = dbset_FormData.Find(x => x.Age > 0).Select(x => x.Age).Average();//Om inte fältet inte är ifyllt blir ålder 0 och det vill vi inte ha för att göra stestiken relevant skulle även kunna sätta tex > 18
 
 
 Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år, Medelålder: {Math.Round(AvrageAge)} år."); //Avrundar Avrage blir snyggare vid tex. 2.5 rundar den ner till 2.
@@ -68,7 +68,7 @@ foreach (var item in g)
         var testr = dbset_UniqueSpanishCars.Insert(item);
     }
 }
-Console.WriteLine("\n=====Vilka bilmärken är mest populär när vi är ute efter en El-bil(spanskbil)?=====");
+Console.WriteLine("\n=====Populära bilmärken El-bil(spanskbil): =====");
 
 var test = dbset_UniqueSpanishCars.FindAll();
 foreach( var item  in test)
@@ -78,12 +78,13 @@ foreach( var item  in test)
 
 
 var AllCars = dbset_FormData.FindAll()
+    .Where(x => !x.IsSpanishCar)
     .GroupBy(x =>x.CarModels)
     .Select(group => new UniqueCars { CarName = group.Key, Count = group.Count() })
     .OrderByDescending(x => x.Count);
 
 
-Console.WriteLine("\n=====Alla bilmärken rankade utifrån popularitet=====");
+Console.WriteLine("\n=====Populära bilmärken inte El-bil: =====");
 
 foreach (var item in AllCars)
 {
