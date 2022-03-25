@@ -43,7 +43,7 @@ namespace FrogeFormular.ReadCSV
 
                         Age = age,
                         IsSpanishCar = isElbil,
-                        CarModels = columns[3] != "" ? columns[3] : "Vet inte", //kollar för tom sträng
+                        CarModels = columns[3] != "" ? columns[3] : "Inte ifyllt fält.", //kollar för tom sträng
                     }) ; 
                 }
 
