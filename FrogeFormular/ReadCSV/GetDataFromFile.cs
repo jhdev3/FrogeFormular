@@ -31,7 +31,7 @@ namespace FrogeFormular.ReadCSV
                     { 
                         isElbil = true; //Alltid markerad i formuläret behöver inte kolla för null
                     }
-                    int age = 0;
+                    int? age = null;
 
                     if (!string.IsNullOrEmpty(columns[1]))
                     {
@@ -40,11 +40,11 @@ namespace FrogeFormular.ReadCSV
 
                     formData.Add(new BaseEntity
                     {
-                        
+
                         Age = age,
                         IsSpanishCar = isElbil,
-                        CarModels = columns[3]
-                    }); 
+                        CarModels = columns[3] != "" ? columns[3] : "Vet inte", //kollar för tom sträng
+                    }) ; 
                 }
 
             }

@@ -32,11 +32,11 @@ Console.WriteLine("\n=====Ålder=====");
 
 
 var Oldest = dbset_FormData.Max(x => x.Age);
-var Youngest = dbset_FormData.Min(x => x.Age && x.Age > 0);
-var AvrageAge = dbset_FormData.Find(x => x.Age > 0).Select(x => x.Age).Average();//Om inte fältet inte är ifyllt sätter vi ålder till 0 och det vill vi undvika när vi tar medelvärde
+var Youngest = dbset_FormData.Find(x=> x.Age != null).Min(x => x.Age); 
+var AvrageAge = dbset_FormData.Find(x => x.Age > 0).Select(x => x.Age).Average();//Inte intresserade när de är 0 men skulle de vara 1 år kanske ett intresse finns för en https://www.jollyroom.se/leksaker/elbilar-elfordon/bilar/volvo-xc90-kinetic-elbil-svart ;) skulle även här kunna ha >18
 
 
-Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år, Medelålder: {Math.Round(AvrageAge)} år."); //Avrundar Avrage blir snyggare vid tex. 2.5 rundar den ner till 2.
+Console.WriteLine($"Äldst: {Oldest} år , Yngst: {Youngest} år, Medelålder: {Math.Round((double)AvrageAge)} år."); //Avrundar Avrage blir snyggare vid tex. 2.5 rundar den ner till 2.
 
 
 //Hämtar alla som svarade JA på spanish car. 
