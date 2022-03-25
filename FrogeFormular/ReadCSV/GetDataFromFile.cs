@@ -31,9 +31,9 @@ namespace FrogeFormular.ReadCSV
                     { 
                         isElbil = true; //Alltid markerad i formuläret behöver inte kolla för null
                     }
-                    int? age = null;
+                    int? age = null; //skulle kunna sätta något default värde om vi vill men låter det vara null passar vårat syfte 
 
-                    if (!string.IsNullOrEmpty(columns[1])) //Borde här bara kunna kolla efter string Empty men jaja
+                    if (!string.IsNullOrEmpty(columns[1])) //Borde här bara kunna kolla efter string Empty viktigt att påpeka här är att vi har sätt till att formuläret bara tillåter siffror. Annars skulle vi gjort tryParse
                     {
                         age = Convert.ToInt32(columns[1]);  
                     }
@@ -44,7 +44,7 @@ namespace FrogeFormular.ReadCSV
                         Age = age,
                         IsSpanishCar = isElbil,
                         CarModels = columns[3] != "" ? columns[3] : "Inte ifyllt fält.", //kollar för tom sträng
-                    }) ; 
+                    }); 
                 }
 
             }

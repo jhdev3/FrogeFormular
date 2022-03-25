@@ -46,18 +46,18 @@ var results = dbset_FormData.Query()
       .ToList();
 
 //Linq fick inte LiteDb att lira med groupBy.
-var g = results.GroupBy(x => x.CarModels)
-        .Select(group => new UniqueCars { CarName = group.Key, Count = group.Count() })
-        .OrderByDescending(x => x.Count);
+var groupSpanishCars = results.GroupBy(x => x.CarModels)
+                               .Select(group => new UniqueCars { CarName = group.Key, Count = group.Count() })
+                               .OrderByDescending(x => x.Count);
 
 Console.WriteLine($"\nHur många planerar köpa en elbil?: {results.Count}");
 
 /*Spara Bilarna i databasen i egen collection för skojs skull och testa sql lite update - Det var därför som id finns i UniqueCars */
-foreach (var item in g)
+
+foreach (var item in groupSpanishCars)
 {
     var findCarname = dbset_UniqueSpanishCars.FindOne(i => i.CarName == item.CarName);
 
-  
     if(findCarname != null)
     {
         findCarname.Count = item.Count;
@@ -70,7 +70,7 @@ foreach (var item in g)
 }
 Console.WriteLine("\n=====Populära bilmärken El-bil(spanskbil): =====");
 
-var test = dbset_UniqueSpanishCars.FindAll();
+var test = dbset_UniqueSpanishCars.FindAll(); //Lite onödigt men var lite intressant att testa liteDb Update.
 foreach( var item  in test)
 {
     Console.WriteLine(item.CarName + " : " + item.Count);
